@@ -1,0 +1,40 @@
+<!-- Voy a renderizar la tabla si esta tiene datos -->
+<!-- Si el array personas es diferente a 0, entonces que renderice -->
+
+<% if(productos.length !== 0) { %>
+<div class="table-responsive">
+  <!-- <button 
+  type="button"
+  id="borrar" 
+  class="btn btn-success mt-3 mb-5"
+  >Borrar Tabla</button> -->
+
+  <% for (const producto in productos ) { %>
+  <div class="card-container">
+    <div class="card" style="width: 18rem">
+      <div class="containerimg">
+        <img
+          src="<%= productos[producto].thumbnail %>"
+          class="card-img-top"
+          alt="..."
+          width="100%"
+        />
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><%= productos[producto].title %></h5>
+        <h3 class="card-title">$ <%= productos[producto].price %></h3>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+        <a href="/productos/<%= productos[producto].id %>" class="btn btn-primary">Ver mas</a>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<!-- Si no hay datos en la tabla, que diga que no hay datos -->
+<% } else{ %>
+<h3 style="color: black">no existen datos</h3>
+<% }%>

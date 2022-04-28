@@ -1,0 +1,40 @@
+<div>
+  <!-- <form onsubmit="return addMessage(this)">
+
+    <input type="text" id="username" placeholder="Tu Nombre" />
+
+    <input type="text" id="texto" placeholder="Cuéntanos algo..." />
+
+    <input type="submit" value="Enviar" />
+
+  </form>
+
+  <div id="mensajes"></div> -->
+
+  <form onsubmit="return addMessage(this)">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="username"
+        aria-describedby="emailHelp"
+      />
+      <div id="emailHelp" class="form-text">
+        <!-- We'll never share your email with anyone else. -->
+      </div>
+    </div>
+
+    <div class="input-group">
+      <textarea
+        id="texto"
+        class="form-control"
+        aria-label="With textarea"
+      ></textarea>
+    </div>
+    <br />
+    <button type="submit" value="Enviar" class="btn btn-primary">Enviar</button>
+  </form>
+
+  <div id="mensajes"></div>
+</div>

@@ -1,0 +1,11 @@
+[
+	{
+		"author": "Admin",
+		"text": "Bienvenidos",
+		"date": "27/4/2022 16:07:48"
+	},
+	{
+		"author": "ezezurdo666@hotmail.com",
+		"text": "Estoy?"
+	}
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "title": "Auriculares in-ear gamer inalámbricos Haylou GT Series GT1 negro",
+    "category": "Earphones",
+    "price": 3899,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_749481-MLA40812448226_022020-F.webp",
+    "id": 1
+  },
+  {
+    "title": "Auriculares in-ear gamer inalámbricos Haylou GT Series GT1 Pro negro",
+    "category": "Earphones",
+    "price": 3299,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_825073-MLA40760731794_022020-F.webp",
+    "id": 2
+  },
+  {
+    "title": "Auriculares in-ear inalámbricos Haylou GT1 XR negro",
+    "category": "Earphones",
+    "price": 4999,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_895993-MLA45883000698_052021-F.webp",
+    "id": 3
+  },
+  {
+    "title": "Auriculares Bluetooth Tws Earbuds Para Samsung Huawei Sony",
+    "category": "Earphones",
+    "price": 12100,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_939435-MLA48138841444_112021-F.webp",
+    "id": "4"
+  },
+  {
+    "title": "Apple AirPods Pro - Blanco",
+    "category": "Earphones",
+    "price": 45500,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_798525-MLA46180356947_052021-F.webp",
+    "id": 5
+  },
+  {
+    "title": "Auriculares in-ear inalámbricos JBL Tune 225TWS black",
+    "price": "13942",
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_771784-MLA46222272082_052021-F.webp",
+    "id": 6
+  },
+  {
+    "title": "Auriculares in-ear inalámbricos Soundpeats TrueFree 2 negro",
+    "price": "5934",
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_618305-MLA46705819840_072021-F.webp",
+    "id": 7
+  },
+  {
+    "title": "Auriculares in-ear gamer inalámbricos Soundpeats TrueAir 2 black",
+    "price": "6753",
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_772388-MLA45642234664_042021-F.webp",
+    "id": 8
+  },
+  {
+    "title": "Auriculares in-ear gamer inalámbricos Soundpeats TrueAir 2 black",
+    "price": "6753",
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_772388-MLA45642234664_042021-F.webp",
+    "id": 9
+  },
+  {
+    "title": "Auriculares in-ear inalámbricos Sony WF-1000XM4 negro",
+    "price": "29999",
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_983978-MLA48023382073_102021-F.webp",
+    "id": 10
+  },
+  {
+    "title": "Auriculares in-ear inalámbricos Samsung Galaxy Buds Pro negro",
+    "price": "28990",
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_709663-MLA45370310241_032021-F.webp",
+    "id": 13
+  },
+  {
+    "title": "Auriculares in-ear gamer inalámbricos Soundpeats TrueAir 2 pink",
+    "price": "6750",
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_603011-MLA46926596815_072021-F.webp",
+    "id": 12
+  }
+]
