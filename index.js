@@ -6,7 +6,7 @@ const productosRouter = require("./router/productos");
 const apiRouter = require("./router/api");
 
 // // Declaro el puerto
-const PORT = 8081;
+const PORT = 8084;
 // Descargo el modulo y lo importo
 const { Server: IOServer } = require("socket.io");
 const { Server: HttpServer } = require("http");
@@ -25,7 +25,7 @@ const io = new IOServer(httpServer);
 // });
 
 // Levanto el servidor socket
-const server = httpServer.listen(8081, () =>
+const server = httpServer.listen(8084, () =>
   console.log("servidor Levantado en:", PORT)
 );
 

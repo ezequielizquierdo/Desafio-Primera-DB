@@ -1,42 +1,70 @@
 const fs = require("fs");
+const { mariaDB } = require("../database/mariaDB");
+const knex = require("knex")(mariaDB);
 
-const writeData = (file, data) => {
+const writeData = (producto) => {
   try {
-    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+    // const adding = fs.writeFileSync(file, JSON.stringify(data, null, 2));
+    // console.log("adding", adding)
+    const respuesta = knex('productos')
+    .insert(producto)
+    .then(() => {
+      console.log('data created')
+    })
+    .catch((err) => {
+      console.log(err)
+      throw err
+    })
+    .finally(() => {
+      knex.destroy()
+    })
+    
+    return respuesta
   } catch (error) {
     console.log("ERROR DE ESCRITURA", error);
   }
 };
 
-const buscarId = async (file, id) => {
-  const respuesta = await fs.promises.readFile(file, "utf-8");
-  const data = await JSON.parse(respuesta, null, 2);
-  const isArray = data.some((item) => item.id == id);
-  if (isArray) {
-    const itemFound = data.find((item) => item.id == id);
-    return itemFound;
+const buscarId = async (id) => {
+  // const respuesta = await fs.promises.readFile(file, "utf-8");
+  // const data = await JSON.parse(respuesta, null, 2);
+  // const isArray = respuesta.some((item) => item.id == id);
+  try {
+    const respuesta = await knex
+      .from("productos")
+      .select("*")
+      .where("id", "=", id);
+    return respuesta
+  } catch (error) {
+    console.log("No se encontró el producto con ese id", error);
   }
-  return null;
+  
+  // if (isArray) {
+  //   const itemFound = respuesta.find((item) => item.id == id);
+  //   return itemFound;
+  // }
+  // return null;
 };
 
-const getData = async (file) => {
+const getData = async () => {
   try {
-    const respuesta = await fs.promises.readFile(file, "utf-8");
-    const data = await JSON.parse(respuesta, null, 2);
-    return data;
+    // const respuesta = await fs.promises.readFile(file, "utf-8");
+    // const data = await JSON.parse(respuesta, null, 2);
+    // console.log(data)
+    const respuesta = await knex.from("productos").select("*");
+    return respuesta;
   } catch (error) {
     console.log("Error de Lectura", error);
   }
 };
 
 const estaProducto = (id, array) => {
-  return array.filter(producto => producto.id === id);
+  return array.filter((producto) => producto.id === id);
 };
 
-
 const clearProductos = () => {
-  console.log("Hizo click")
+  console.log("Hizo click");
   // return productos = []
-}
+};
 
 module.exports = { getData, estaProducto, buscarId, writeData, clearProductos };

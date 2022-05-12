@@ -1,7 +1,6 @@
 const fs = require("fs");
 // const data = fs.readFileSync("data/productos.json");
 const products = fs.readFileSync("./productos.txt");
-console.log("products", products)
 const { idGenerate } = require("../helpers/id-generate");
 
 // let products = JSON.parse(data);
@@ -115,6 +114,4 @@ class Producto {
   };
 }
 
-module.exports = {
-  Producto,
-};
+module.exports = Producto;

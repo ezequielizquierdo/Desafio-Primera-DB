@@ -15,8 +15,8 @@ const apiRouter = express.Router();
 // Llamo todos los productos
 apiRouter.get("/productos", async (req, res) => {
   try {
-    const productos = await getData("data/productos.json");
-    console.log("productos", productos);
+    const productos = await getData();
+    console.log('productos desde getData', productos)
     productos !== undefined
       ? res.json(productos)
       : res.json({ error: "producto no encontrado" });
@@ -31,10 +31,7 @@ apiRouter.get("/productos/:num", async (req, res) => {
   if (isNaN(req.params.num)) {
     res.json({ error: "el parametro no es un numero" });
   } else {
-    const productoBuscado = await buscarId(
-      "data/productos.json", 
-      numeroId
-      );
+    const productoBuscado = await buscarId(numeroId);
     productoBuscado !== null
       ? res.json(productoBuscado)
       : res.json({ error: "producto no encontrado" });
@@ -45,7 +42,7 @@ apiRouter.get("/productos/:num", async (req, res) => {
 // Recibe y agrega un producto, y lo devuelve con su id asignado.
 
 apiRouter.post("/productos", async (req, res) => {
-  let productos = await getData("data/productos.json");
+  let productos = await getData();
   if (
     req.body.title == null ||
     req.body.price == null ||
@@ -67,22 +64,20 @@ apiRouter.post("/productos", async (req, res) => {
   const productoGuardado = [];
 
   try {
-    writeData("data/productos.json", [...productos, { ...req.body, id: id }]);
-    // productos = await getData("./contenedor/productos.txt");
-    productos = await getData("data/productos.json");
-    productoGuardado.push(...productos, { ...req.body, id: id });
-    // return res.json([{ ...req.body, id: id }]);
-    return res.render("formulario", { productos });
+    const agregado = await writeData([{ ...req.body, id: id }]);
+    console.log("agregado", [{ ...req.body, id: id }])
+    return res.json([{ ...req.body, id: id }]);
   } catch (e) {
     console.log("No se pudo guardar el objeto " + e);
   }
 });
 
+
 // Actualizo un producto por su id
 apiRouter.put("/productos/:id", async (req, res) => {
   const numeroId = req.params.id;
   try {
-    const productos = await getData("data/productos.json");
+    const productos = await getData();
 
     if (estaProducto(numeroId, productos)) {
       const indexProducto = req.params.id - 1;
@@ -122,10 +117,7 @@ apiRouter.delete("/productos/:id", async (req, res) => {
   const id = req.params.id;
   const productos = await getData("data/productos.json");
   const indice = id - 1;
-  const productoBuscado = await buscarId(
-    "data/productos.json",
-    id
-  );
+  const productoBuscado = await buscarId("data/productos.json", id);
   console.log("Producto Elegido", productoBuscado);
   try {
     if (estaProducto(id, productos)) {
@@ -165,14 +157,11 @@ apiRouter.get("/carrito/:num", async (req, res) => {
   if (isNaN(req.params.num)) {
     res.json({ error: "el parametro no es un numero" });
   } else {
-    const productoBuscado = await buscarId(
-      "data/carrito.json",
-      numeroId
-    );
+    const productoBuscado = await buscarId("data/carrito.json", numeroId);
     productoBuscado !== null
       ? res.send(productoBuscado)
       : res.json({ error: "producto no encontrado" });
-      console.log("productoBuscado", productoBuscado)
+    console.log("productoBuscado", productoBuscado);
   }
 });
 
@@ -201,10 +190,7 @@ apiRouter.post("/carrito", async (req, res) => {
   const carritoGuardado = [];
 
   try {
-    writeData("data/carrito.json", [
-      ...carrito,
-      { ...req.body, id: id },
-    ]);
+    writeData("data/carrito.json", [...carrito, { ...req.body, id: id }]);
     carrito = await getData("data/carrito.json");
     carritoGuardado.push(...carrito, { ...req.body, id: id });
     // return res.json([{ ...req.body, id: id }]);
@@ -225,9 +211,9 @@ apiRouter.put("/carrito/:id", async (req, res) => {
 
       const productoCargar = { ...req.body, id: numeroId };
       console.log("productoCargar ->", productoCargar);
-      
+
       carrito.splice(indexProducto, 1, productoCargar);
-      
+
       writeData("data/carrito.json", carrito);
 
       return res.json("se actualizo el carrito");
@@ -258,10 +244,7 @@ apiRouter.delete("/carrito/:id", async (req, res) => {
   const id = req.params.id;
   const carrito = await getData("data/carrito.json");
   const indice = id - 1;
-  const productoBuscado = await buscarId(
-    "data/carrito.json",
-    id
-  );
+  const productoBuscado = await buscarId("data/carrito.json", id);
   console.log("Producto Elegido", productoBuscado);
   try {
     if (estaProducto(id, carrito)) {
