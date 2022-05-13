@@ -4,6 +4,8 @@ const {
   buscarId,
   estaProducto,
   writeData,
+  updateData,
+  borrarId,
 } = require("../controllers/products-controller");
 
 const fs = require("fs");
@@ -16,7 +18,6 @@ const apiRouter = express.Router();
 apiRouter.get("/productos", async (req, res) => {
   try {
     const productos = await getData();
-    console.log('productos desde getData', productos)
     productos !== undefined
       ? res.json(productos)
       : res.json({ error: "producto no encontrado" });
@@ -61,50 +62,41 @@ apiRouter.post("/productos", async (req, res) => {
   // Cuento la cantidad de productos en el array productos existente y le sumo 1
   const id = productos.length + 1;
 
-  const productoGuardado = [];
-
   try {
-    const agregado = await writeData([{ ...req.body, id: id }]);
-    console.log("agregado", [{ ...req.body, id: id }])
+    await writeData([{ ...req.body, id: id }]);
+    console.log("Producto agregado ->", [{ ...req.body, id: id }]);
     return res.json([{ ...req.body, id: id }]);
   } catch (e) {
     console.log("No se pudo guardar el objeto " + e);
   }
 });
 
-
 // Actualizo un producto por su id
 apiRouter.put("/productos/:id", async (req, res) => {
   const numeroId = req.params.id;
   try {
     const productos = await getData();
-
     if (estaProducto(numeroId, productos)) {
       const indexProducto = req.params.id - 1;
-
       const productoCargar = { ...req.body, id: numeroId };
-      console.log("productoCargar ->", productoCargar);
+      const prodsplice = productos.splice(indexProducto, 1, productoCargar);
 
-      productos.splice(indexProducto, 1, productoCargar);
-
-      writeData("data/productos.json", productos);
-
-      return res.json("se actualizo el producto");
+      console.log("Updated ->", prodsplice);
+      return res.json(prodsplice);
     } else {
-      return res.json("no esta el producto");
+      return res.json("No esta el producto");
     }
   } catch (error) {
-    console.log("no se pudo post producto nuevo " + error);
+    console.log("No se pudo post producto nuevo " + error);
   }
 });
 
 // Este método delete borra todo en el archivo productos.txt
 apiRouter.delete("/productos", async (req, res) => {
   try {
-    let productos = await getData("data/productos.json");
-    console.log(productos);
+    let productos = await getData();
     if (productos) {
-      writeData("data/productos.json", []);
+      await writeData([]);
       return res.json({ mensaje: "Se borro todo" });
     }
   } catch (err) {
@@ -115,24 +107,13 @@ apiRouter.delete("/productos", async (req, res) => {
 // Este método borra el producto por su id
 apiRouter.delete("/productos/:id", async (req, res) => {
   const id = req.params.id;
-  const productos = await getData("data/productos.json");
-  const indice = id - 1;
-  const productoBuscado = await buscarId("data/productos.json", id);
-  console.log("Producto Elegido", productoBuscado);
+  const productoBuscado = await buscarId(id);
+  console.log("Producto Elegido para borrar", productoBuscado);
   try {
-    if (estaProducto(id, productos)) {
-      productos.splice(indice, 1);
-      let indiceId = 1;
-      productos.forEach((element) => {
-        element.id = indiceId;
-        indiceId++;
-      });
-      writeData("data/productos.json", productos);
-      return res.json({ mensaje: `El item con el ID ${id} fue eliminado` });
-    }
-    res.json({ mensaje: `El item con el ID ${id} no esta` });
+    borrarId(id);
+    res.json(productoBuscado);
   } catch (err) {
-    res.json({ mensaje: `no se pudo eliminar el id` });
+    res.json(err);
   }
 });
 

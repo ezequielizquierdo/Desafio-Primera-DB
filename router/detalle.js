@@ -14,8 +14,7 @@ const detalleRouter = express.Router();
 // Llamo a todos los productos
 detalleRouter.get("/productos", async (req, res) => {
   try {
-    const productos = await getData("./contenedor/productos.txt");
-    console.log("productos", productos);
+    const productos = await getData();
     productos !== undefined
       ? //res.send(productos)
         res.render("detalle", { productos })
@@ -31,12 +30,8 @@ detalleRouter.get("/:num", async (req, res) => {
   if (isNaN(req.params.num)) {
     res.json({ error: "el parametro no es un numero" });
   } else {
-    const productoBuscado = await buscarId(
-      "./contenedor/productos.txt",
-      numeroId
-    );
+    const productoBuscado = await buscarId(numeroId);
     productoBuscado !== null
-    //   ? res.send(productoBuscado)
       ? res.render("detalle", { productoBuscado })
       : res.json({ error: "producto no encontrado" });
       console.log("productoBuscado", productoBuscado)
@@ -46,8 +41,7 @@ detalleRouter.get("/:num", async (req, res) => {
 // recibe y agrega un producto, y lo devuelve con su id asignado.
 // detalleRouter.post("/totales", async (req, res) => {
 detalleRouter.post("/", async (req, res) => {
-  let productos = await getData("./contenedor/productos.txt");
-
+  let productos = await getData();
   if (
     req.body.title == null ||
     req.body.price == null ||
@@ -55,12 +49,10 @@ detalleRouter.post("/", async (req, res) => {
   ) {
     res.json({ error: "Faltan productos por completar" });
   }
-
   if (req == null) {
     console.log("Checkout");
   } else {
   }
-
   // Si no hay productos el id será 0
   if (productos == "[]") {
     productos = 0;
@@ -68,16 +60,9 @@ detalleRouter.post("/", async (req, res) => {
   // Cuento la cantidad de productos en el array productos existente y le sumo 1
   const id = productos.length + 1;
 
-  const productosGuardado = [];
-
   try {
-    writeData("./contenedor/productos.txt", [
-      ...productos,
-      { ...req.body, id: id },
-    ]);
-    productos = await getData("./contenedor/productos.txt");
-    productosGuardado.push(...productos, { ...req.body, id: id });
-    // return res.json([{ ...req.body, id: id }]);
+    await writeData([{ ...req.body, id: id }]);
+    productos = await getData();
     return res.render("checkout", { productos });
   } catch (e) {
     console.log("No se pudo guardar el objeto " + e);
@@ -88,20 +73,14 @@ detalleRouter.post("/", async (req, res) => {
 detalleRouter.put("/:id", async (req, res) => {
   const numeroId = req.params.id;
   try {
-    const productos = await getData("./contenedor/productos.txt");
-
+    const productos = await getData();
     if (estaProducto(numeroId, productos)) {
       const indexProducto = req.params.id - 1;
-
       const productoCargar = { ...req.body, id: numeroId };
-      console.log("productoCargar ->", productoCargar);
-      
-      productos.splice(indexProducto, 1, productoCargar);
-      
-      writeData("./contenedor/productos.txt", productos);
+      const prodsplice = productos.splice(indexProducto, 1, productoCargar);
 
-      // return res.send(productos);
-      return res.json("se actualizo el productos");
+      console.log("Updated ->", prodsplice);
+      return res.json(prodsplice);
     } else {
       return res.json("no esta el productos");
     }
@@ -113,11 +92,9 @@ detalleRouter.put("/:id", async (req, res) => {
 // Este método delete borra todo en el archivo productos.txt
 detalleRouter.delete("/", async (req, res) => {
   try {
-    let productos = await getData("./contenedor/productos.txt");
-    console.log(productos);
-    // if (estaProducto(productos)) {
+    let productos = await getData();
     if (productos) {
-      writeData("./contenedor/productos.txt", []);
+      writeData([]);
       return res.json({ mensaje: "Se borro todo" });
     }
   } catch (err) {
@@ -128,27 +105,13 @@ detalleRouter.delete("/", async (req, res) => {
 // Este método llama al producto por su id
 detalleRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
-  const productos = await getData("./contenedor/productos.txt");
-  const indice = id - 1;
-  const productoBuscado = await buscarId(
-    "./contenedor/productos.txt",
-    id
-  );
-  console.log("Producto Elegido", productoBuscado);
+  const productoBuscado = await buscarId(id);
+  console.log("Producto Elegido para borrar", productoBuscado);
   try {
-    if (estaProducto(id, productos)) {
-      productos.splice(indice, 1);
-      let indiceId = 1;
-      productos.forEach((element) => {
-        element.id = indiceId;
-        indiceId++;
-      });
-      writeData("./contenedor/productos.txt", productos);
-      return res.json({ mensaje: `El item con el ID ${id} fue eliminado` });
-    }
-    res.json({ mensaje: `El item con el ID ${id} no esta` });
+    borrarId(id);
+    return res.json(productoBuscado);
   } catch (err) {
-    res.json({ mensaje: `no se pudo eliminar el id` });
+    res.json(err);
   }
 });
 

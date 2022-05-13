@@ -14,11 +14,10 @@ const carritoRouter = express.Router();
 // Llamo a todos los productos
 carritoRouter.get("/", async (req, res) => {
   try {
-    const carrito = await getData("./contenedor/carrito.txt");
+    const carrito = await getData();
     console.log("carrito", carrito);
     carrito !== undefined
-      ? //res.send(carrito)
-        res.render("checkout", { carrito })
+      ? res.render("checkout", { carrito })
       : res.json({ error: "producto no encontrado" });
   } catch (error) {
     return res.json({ mensaje: "no se pudo comprar" });
@@ -31,10 +30,7 @@ carritoRouter.get("/:num", async (req, res) => {
   if (isNaN(req.params.num)) {
     res.json({ error: "el parametro no es un numero" });
   } else {
-    const productoBuscado = await buscarId(
-      "./contenedor/carrito.txt",
-      numeroId
-    );
+    const productoBuscado = await buscarId(numeroId);
     productoBuscado !== null
       ? res.send(productoBuscado)
       : res.json({ error: "producto no encontrado" });
@@ -45,8 +41,7 @@ carritoRouter.get("/:num", async (req, res) => {
 // recibe y agrega un producto, y lo devuelve con su id asignado.
 // carritoRouter.post("/totales", async (req, res) => {
 carritoRouter.post("/", async (req, res) => {
-  let carrito = await getData("./contenedor/carrito.txt");
-
+  let carrito = await getData();
   if (
     req.body.title == null ||
     req.body.price == null ||
@@ -54,12 +49,10 @@ carritoRouter.post("/", async (req, res) => {
   ) {
     res.json({ error: "Faltan carrito por completar" });
   }
-
   if (req == null) {
     console.log("Checkout");
   } else {
   }
-
   // Si no hay productos el id será 0
   if (carrito == "[]") {
     carrito = 0;
@@ -67,16 +60,9 @@ carritoRouter.post("/", async (req, res) => {
   // Cuento la cantidad de carrito en el array carrito existente y le sumo 1
   const id = carrito.length + 1;
 
-  const carritoGuardado = [];
-
   try {
-    writeData("./contenedor/carrito.txt", [
-      ...carrito,
-      { ...req.body, id: id },
-    ]);
-    carrito = await getData("./contenedor/carrito.txt");
-    carritoGuardado.push(...carrito, { ...req.body, id: id });
-    // return res.json([{ ...req.body, id: id }]);
+    await writeData([{ ...req.body, id: id }]);
+    carrito = await getData();
     return res.render("checkout", { carrito });
   } catch (e) {
     console.log("No se pudo guardar el objeto " + e);
@@ -87,13 +73,11 @@ carritoRouter.post("/", async (req, res) => {
 carritoRouter.put("/:id", async (req, res) => {
   const numeroId = req.params.id;
   try {
-    const carrito = await getData("./contenedor/carrito.txt");
-
+    const carrito = await getData();
     if (estaProducto(numeroId, carrito)) {
       const indexProducto = req.params.id - 1;
-
       const productoCargar = { ...req.body, id: numeroId };
-      console.log("productoCargar ->", productoCargar);
+  
       
       carrito.splice(indexProducto, 1, productoCargar);
       
