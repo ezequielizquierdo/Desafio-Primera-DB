@@ -73,19 +73,11 @@ apiRouter.post("/productos", async (req, res) => {
 
 // Actualizo un producto por su id
 apiRouter.put("/productos/:id", async (req, res) => {
-  const numeroId = req.params.id;
+  let numeroId = req.params.id;
   try {
-    const productos = await getData();
-    if (estaProducto(numeroId, productos)) {
-      const indexProducto = req.params.id - 1;
-      const productoCargar = { ...req.body, id: numeroId };
-      const prodsplice = productos.splice(indexProducto, 1, productoCargar);
-
-      console.log("Updated ->", prodsplice);
-      return res.json(prodsplice);
-    } else {
-      return res.json("No esta el producto");
-    }
+    await updateData(req.params.id, req.body);
+    console.log("Producto modificado ->", [{ ...req.body, numeroId }]);
+    return res.json([{ ...req.body, id: numeroId }]);
   } catch (error) {
     console.log("No se pudo post producto nuevo " + error);
   }

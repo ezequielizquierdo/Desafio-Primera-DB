@@ -4,13 +4,13 @@
   <div class="card-container">
     <div class="containerimg-card">
       <div class="img-card">
-        <img src="<%= productoBuscado.thumbnail %>" alt="imageproduct" class="img-card" />
+        <img src="<%= productoBuscado[0].thumbnail %>" alt="imageproduct" class="img-card" />
       </div>
     </div>
 
     <div class="detailcontainer-card">
-      <div class="title-card"><%= productoBuscado.title %></div>
-      <div class="price-card">$ <%= productoBuscado.price %></div>
+      <div class="title-card"><%= productoBuscado[0].title %></div>
+      <div class="price-card">$ <%= productoBuscado[0].price %></div>
       <div class="description-card">Descripción</div>
 
       <!-- <ItemCount finishing={onAdd}></ItemCount> -->

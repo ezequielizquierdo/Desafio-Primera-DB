@@ -30,6 +30,7 @@ productosRouter.get("/:num", async (req, res) => {
     res.json({ error: "el parametro no es un numero" });
   } else {
     const productoBuscado = await buscarId(numeroId);
+    console.log("productoBuscado en productos", productoBuscado[0].title)
     productoBuscado !== null
       ? res.render("detalle", { productoBuscado })
       : res.json({ error: "producto no encontrado" });
